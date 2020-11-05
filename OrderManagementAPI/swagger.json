@@ -1,0 +1,181 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Order Management API",
+      "description": "Implemented an order management to expose a Restful API to help company/restaurant to receive a hotel booking details and inserted the details in the database. In the future, this system will be supposed to be integrated with a payment system to confirm the booking and fulfill the order accordingly but, at the moment this API focused and designed for creating hotels, rooms, and an Order.",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:4000",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "Hotel",
+        "description": "API for hotels in the system"
+      },
+      {
+        "name": "Room",
+        "description": "API for rooms in the system"
+      },
+      {
+        "name": "Order",
+        "description": "API for order in the system"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/createHotel": {
+        "post": {
+          "tags": [
+            "Hotel"
+          ],
+          "description": "Create a new hotel master entry in system",
+          "parameters": [
+            {
+              "name": "hotel",
+              "in": "body",
+              "required": true,
+              "description": "A hotel that we want to create",
+              "schema": {
+                "$ref": "#/definitions/Hotel"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {"description": "The hotel added successfully."},
+            "400":{"description":"The hotel name is required.Please provide hotel name."},
+            "409":{"description":"The hotel name already exists. Please try another name."},
+            "500":{"description":"An error occurred while processing this request."}
+          }
+        }
+      },
+      "/createRoom": {
+        "post": {
+          "tags": [
+            "Room"
+          ],
+          "description": "Create a new room entry in system",
+          "parameters": [
+            {
+              "name": "room",
+              "in": "body",
+              "required": true,
+              "description": "A room that we want to create",
+              "schema": {
+                "$ref": "#/definitions/Room"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {"description": "The room added successfully."},
+            "400":{"description":"The room name is required.Please provide room name."},
+            "409":{"description":"The room name already exists. Please try another name."},
+            "500":{"description":"An error occurred while processing this request."}
+          }
+        }
+      },
+      "/createOrder": {
+        "post": {
+          "tags": [
+            "Order"
+          ],
+          "description": "Create an new order in system",
+          "parameters": [
+            {
+              "name": "order",
+              "in": "body",
+              "required": true,
+              "description": "An order that we want to create",
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {"description": "An order created successfully."},
+            "400":{"description":"1.Please provide name,phone number,check-in date,check-out date,hotel,no.of guest and room.These parameters are required.\n 2.Invalid hotel id. \n 3.Invalid room id."},
+            "404":{"description":"1.The hotel not found. \n 2.The room not found"},
+            "500":{"description":"An error occurred while processing this request."}
+          }
+        }
+      }
+
+    },
+    "definitions": {
+      "Hotel": {
+        "required": ["hotelName"],
+        "properties": {
+          "hotelName": {
+            "type": "string"
+          }
+        }
+      },
+      "Room": {
+        "required": ["roomName"],
+        "properties": {
+          "roomName": {
+            "type": "string"
+          }
+        }
+      },
+      "Order": {
+        "required": ["name","phoneNumber","checkInDate","checkOutDate","hotelId","roomId","noOfGuest"],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "email" : {
+                "type": "string"
+            },
+            "phoneNumber" : {
+                "type": "string"
+            },
+            "checkInDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "checkOutDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "hotelId":{"type":"string", "ref":"Hotel"},
+            "roomId":{"type":"string", "ref":"Room"},
+            "noOfGuest":{"type":"number"},
+            "totalAmount":{"type":"number"}
+        }
+      },
+      "Customer": {
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "email" : {
+                "type": "string"
+            },
+            "phoneNumber" : {
+                "type": "string"
+            }
+        }
+      }
+    }
+  }
